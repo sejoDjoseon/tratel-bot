@@ -4,20 +4,29 @@ require('dotenv').config();
 
 
 class TorrentManager {
+
+    onDownloadStart = undefined;
+
+    onDownloadComplete = undefined;
+
+    onDownloadError = undefined;
+
     constructor() {
         this.aria2 = new Aria2();
+
+        this.aria2.on("onDownloadStart", ([{gid}]) => {
+            this.onDownloadStart && this.onDownloadStart(gid);
+        });
+        this.aria2.on("onDownloadComplete", ([{gid}]) => {
+            this.onDownloadComplete && this.onDownloadComplete(gid);
+        });
+        this.aria2.on("onDownloadError", ([{gid}]) => {
+            this.onDownloadError && this.onDownloadError(gid);
+        });
+
         this._init();
     }
     downloadTorrent (target, context) {
-        this.aria2.on("onDownloadStart", ([{gid}]) => {
-            context.reply("Your torrent download started with id: "+gid);
-        });
-        this.aria2.on("onDownloadComplete", ([{gid}]) => {
-            context.reply("Your torrent : " + gid + " was downloaded successfully");
-        });
-        this.aria2.on("onDownloadError", ([{gid}]) => {
-            context.reply("Cannot download torrent: " + gid + "revise the URI");
-        });
         this.aria2.call("addUri", [`${target}`], { dir: `${process.env.DOWNLOAD_DIR}` });
     }
      _init () {
@@ -42,18 +51,5 @@ class TorrentManager {
     }
 }
 
-class Singleton {
 
-    constructor() {
-        if (!Singleton.instance) {
-            Singleton.instance = new TorrentManager();
-        }
-    }
-
-    getInstance() {
-        return Singleton.instance;
-    }
-
-}
-
-module.exports = TorrentManager;
+module.exports = new TorrentManager();

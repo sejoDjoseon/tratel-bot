@@ -4,15 +4,24 @@ require('dotenv').config();
 
 
    class TelegramBot {
+
+    downloadContext = undefined;
+
     constructor() {
         this.bot = new Telegraf(process.env.TELEGRAM_BOT_KEY);
-        this.downloadService = new DownloadService();
         this._init();
     }
 
     async _init() {
         this._setCommands();
         await this.bot.launch();
+
+        DownloadService.onDownloadStart = (gid) => { this.downloadContext.reply("Your torrent download started with id: "+gid) }
+
+        DownloadService.onDownloadComplete = (gid) => { this.downloadContext.reply("Your torrent : " + gid + " was downloaded successfully"); }
+
+        DownloadService.onDownloadError = (gid) => { this.downloadContext.reply("Cannot download torrent: " + gid + "revise the URI"); }
+
     }
 
     _setCommands () {
@@ -24,9 +33,13 @@ require('dotenv').config();
         })
         this.bot.command('download', (context) => {
             let [ ,target] = context.message.text.split(' ');
-            !!target ?
-                this.downloadService.downloadTorrent(target, context) :
+
+            if (!!target) {
+                this.downloadContext = context;
+                DownloadService.downloadTorrent(target);
+            } else {
                 context.reply('URI is required');
+            }
         });
     }
 
