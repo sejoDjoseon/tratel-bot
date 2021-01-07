@@ -32,11 +32,11 @@ require('dotenv').config();
             context.reply("I'm ready to download any torrent you want, write /help to show the basics");
         })
         this.bot.command('download', (context) => {
-            let [ ,target] = context.message.text.split(' ');
+            let [ ,target, folder] = context.message.text.split(' ');
 
             if (!!target) {
                 this.downloadContext = context;
-                DownloadService.downloadTorrent(target);
+                DownloadService.downloadTorrent(target, folder);
             } else {
                 context.reply('URI is required');
             }
