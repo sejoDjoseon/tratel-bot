@@ -27,7 +27,7 @@ class TorrentManager {
         this._init();
     }
     downloadTorrent (target, folder = '') {
-        this.aria2.call("addUri", [`${target}`], { dir: `${process.env.DOWNLOAD_DIR}/${folder}` });
+        this.aria2.call("addUri", [`${target}`], { dir: `${process.env.TRATELBOT_DOWNLOAD_DIR}/${folder}` });
     }
      _init () {
         this._execCommand('aria2c --enable-rpc --rpc-listen-all=true --rpc-allow-origin-all --seed-time=0');
