@@ -51,11 +51,11 @@ You can pass him a URI, and he'll notify when torrent status changes: when downl
     cd install
     vim tratelbot.conf
     ```
-    Set your telegram bot token and the path to download folder. Save changes.
+    Set your telegram bot token and the path to download folder (must be absolute). Save changes.
     ```bash
     vim tratelbot.service
     ```
-    Set a available `User` in your system. Save changes.
+    Set an available `User` in your system. Save changes.
 
 3. Install
     ```bash
