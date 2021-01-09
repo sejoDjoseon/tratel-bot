@@ -5,6 +5,7 @@ You can pass him a URI, and he'll notify when torrent status changes: when downl
 ## Table of contents
 
 - [Quick start](#quick-start)
+- [Install service](#install-service)
 - [Bugs and feature requests](#bugs-and-feature-requests)
 - [Contributing](#contributing)
 - [Creators](#creators)
@@ -41,6 +42,32 @@ You can pass him a URI, and he'll notify when torrent status changes: when downl
         ````text
         /download https://rarbgmirror.org/download.php?id=fxt6obs&h=ba5&f=Mr.Queen.S01E05.KOREAN.1080p.WEBRip.AAC2.0.x264-AppleTor%5Brartv%5D-[rarbg.to].torrent
         ````
+
+## Install Service
+1. `aria2c` must be installed.
+
+2. Configure installation
+    ```bash
+    cd install
+    vim tratelbot.conf
+    ```
+    Set your telegram bot token and the path to download folder (must be absolute). Save changes.
+    ```bash
+    vim tratelbot.service
+    ```
+    Set an available `User` in your system. Save changes.
+
+3. Install
+    ```bash
+    sudo ./install.sh
+    ```
+
+4. Enable and start service
+    ```bash
+    systemctl enable tratelbot.service
+    systemctl start tratelbot.service
+    ```
+
   ## Bugs and feature requests
    - Have a bug, or a feature request? Search for existing and closed issues. If your problem or idea is not addressed yet, [please open a new issue](https://github.com/sejoDjoseon/tratel-bot/issues/new).
 
